@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:stock_ranking_project/src/app/app.dart';
+import 'package:stock_ranking_project/src/core/constant/storage_keys.dart';
 import 'package:stock_ranking_project/src/core/service/graph_ql/graph_ql_service.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  await Hive.openBox('stock_cache');
+  await Hive.initFlutter();
+  await Hive.openBox(StorageKeys.stockRankingListCache);
   final graphQLService = GraphQLServiceImpl();
 
-  runApp(MyApp(graphQLService: graphQLService));
+  runApp(ProviderScope(child: MyApp(graphQLService: graphQLService)));
 }
 
 class MyApp extends StatelessWidget {
