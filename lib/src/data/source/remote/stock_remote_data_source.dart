@@ -1,12 +1,11 @@
 import 'package:stock_ranking_project/src/core/error/failure.dart';
 import 'package:stock_ranking_project/src/data/query/jitta_ranking_queries.dart';
-
 import '../../../core/service/graph_ql/graph_ql_service.dart';
-import '../../../domain/entities/stock/jitta_ranking_entity.dart';
-import '../../models/jitta_ranking_model.dart';
+import '../../../domain/entities/stock/stock_ranking_entity.dart';
+import '../../models/stock_ranking_model.dart';
 
 abstract class StockRemoteDataSource {
-  Future<List<JittaRankingEntity>> getStockRanking({
+  Future<List<StockRankingEntity>> getStockRanking({
     required int limit,
     required String market,
     required int page,
@@ -20,18 +19,23 @@ class StockRemoteDataSourceImpl implements StockRemoteDataSource {
   StockRemoteDataSourceImpl(this._graphQLService);
 
   @override
-  Future<List<JittaRankingEntity>> getStockRanking({
+  Future<List<StockRankingEntity>> getStockRanking({
     required int limit,
     required String market,
     required int page,
     String? sector,
   }) async {
-    final variables = {
-      'limit': limit,
+    final filterInput = {
       'market': market,
-      'page': page,
-      'sector': sector,
+      if (sector != null && sector != 'All') 'sector': sector,  // Filter by sector if provided
     };
+
+    final variables = {
+      'filter': filterInput,  // filter market and sector
+      'limit': limit,
+      'page': page,
+    };
+
     try {
       final result = await _graphQLService
           .query(JittaRankingQueries.fetchJittaRanking, variables: variables);
@@ -41,8 +45,8 @@ class StockRemoteDataSourceImpl implements StockRemoteDataSource {
       }
 
       final data = result.data?['jittaRanking'];
-      List<JittaRankingModel> jittaRankingModel = (data['data'] as List)
-          .map((json) => JittaRankingModel.fromJson(json))
+      List<StockRankingModel> jittaRankingModel = (data['data'] as List)
+          .map((json) => StockRankingModel.fromJson(json))
           .toList();
 
       return jittaRankingModel.map((model) => model.toEntity()).toList();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:stock_ranking_project/src/domain/entities/stock/jitta_ranking_entity.dart';
+import 'package:stock_ranking_project/src/domain/entities/stock/stock_ranking_entity.dart';
 
 class StockDetailPage extends StatelessWidget {
-  final JittaRankingEntity stock; // Receive stock data as an argument
+  final StockRankingEntity stock;
 
   const StockDetailPage({super.key, required this.stock});
 
@@ -10,7 +10,7 @@ class StockDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(stock.symbol), // Display stock symbol as title
+        title: Text(stock.symbol),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

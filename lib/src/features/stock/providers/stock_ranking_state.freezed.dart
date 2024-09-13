@@ -17,8 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$StockRankingState {
   bool get loading => throw _privateConstructorUsedError;
-  List<JittaRankingEntity> get stocks => throw _privateConstructorUsedError;
+  List<StockRankingEntity> get stocks => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
+  String get selectedSector => throw _privateConstructorUsedError;
+  List<String> get sectors => throw _privateConstructorUsedError;
+  String get selectedMarket => throw _privateConstructorUsedError;
+  List<String> get markets => throw _privateConstructorUsedError;
 
   /// Create a copy of StockRankingState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +38,13 @@ abstract class $StockRankingStateCopyWith<$Res> {
       _$StockRankingStateCopyWithImpl<$Res, StockRankingState>;
   @useResult
   $Res call(
-      {bool loading, List<JittaRankingEntity> stocks, String errorMessage});
+      {bool loading,
+      List<StockRankingEntity> stocks,
+      String errorMessage,
+      String selectedSector,
+      List<String> sectors,
+      String selectedMarket,
+      List<String> markets});
 }
 
 /// @nodoc
@@ -55,6 +65,10 @@ class _$StockRankingStateCopyWithImpl<$Res, $Val extends StockRankingState>
     Object? loading = null,
     Object? stocks = null,
     Object? errorMessage = null,
+    Object? selectedSector = null,
+    Object? sectors = null,
+    Object? selectedMarket = null,
+    Object? markets = null,
   }) {
     return _then(_value.copyWith(
       loading: null == loading
@@ -64,11 +78,27 @@ class _$StockRankingStateCopyWithImpl<$Res, $Val extends StockRankingState>
       stocks: null == stocks
           ? _value.stocks
           : stocks // ignore: cast_nullable_to_non_nullable
-              as List<JittaRankingEntity>,
+              as List<StockRankingEntity>,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedSector: null == selectedSector
+          ? _value.selectedSector
+          : selectedSector // ignore: cast_nullable_to_non_nullable
+              as String,
+      sectors: null == sectors
+          ? _value.sectors
+          : sectors // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      selectedMarket: null == selectedMarket
+          ? _value.selectedMarket
+          : selectedMarket // ignore: cast_nullable_to_non_nullable
+              as String,
+      markets: null == markets
+          ? _value.markets
+          : markets // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -82,7 +112,13 @@ abstract class _$$StockRankingStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {bool loading, List<JittaRankingEntity> stocks, String errorMessage});
+      {bool loading,
+      List<StockRankingEntity> stocks,
+      String errorMessage,
+      String selectedSector,
+      List<String> sectors,
+      String selectedMarket,
+      List<String> markets});
 }
 
 /// @nodoc
@@ -101,6 +137,10 @@ class __$$StockRankingStateImplCopyWithImpl<$Res>
     Object? loading = null,
     Object? stocks = null,
     Object? errorMessage = null,
+    Object? selectedSector = null,
+    Object? sectors = null,
+    Object? selectedMarket = null,
+    Object? markets = null,
   }) {
     return _then(_$StockRankingStateImpl(
       loading: null == loading
@@ -110,11 +150,27 @@ class __$$StockRankingStateImplCopyWithImpl<$Res>
       stocks: null == stocks
           ? _value._stocks
           : stocks // ignore: cast_nullable_to_non_nullable
-              as List<JittaRankingEntity>,
+              as List<StockRankingEntity>,
       errorMessage: null == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      selectedSector: null == selectedSector
+          ? _value.selectedSector
+          : selectedSector // ignore: cast_nullable_to_non_nullable
+              as String,
+      sectors: null == sectors
+          ? _value._sectors
+          : sectors // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      selectedMarket: null == selectedMarket
+          ? _value.selectedMarket
+          : selectedMarket // ignore: cast_nullable_to_non_nullable
+              as String,
+      markets: null == markets
+          ? _value._markets
+          : markets // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -124,17 +180,29 @@ class __$$StockRankingStateImplCopyWithImpl<$Res>
 class _$StockRankingStateImpl implements _StockRankingState {
   const _$StockRankingStateImpl(
       {this.loading = false,
-      final List<JittaRankingEntity> stocks = const [],
-      this.errorMessage = ''})
-      : _stocks = stocks;
+      final List<StockRankingEntity> stocks = const [],
+      this.errorMessage = '',
+      this.selectedSector = 'All',
+      final List<String> sectors = const [
+        'All',
+        'Technology',
+        'Automotive',
+        'Retail',
+        'Financial Services'
+      ],
+      this.selectedMarket = 'All',
+      final List<String> markets = const ['All', 'NASDAQ', 'SET', 'NYSE']})
+      : _stocks = stocks,
+        _sectors = sectors,
+        _markets = markets;
 
   @override
   @JsonKey()
   final bool loading;
-  final List<JittaRankingEntity> _stocks;
+  final List<StockRankingEntity> _stocks;
   @override
   @JsonKey()
-  List<JittaRankingEntity> get stocks {
+  List<StockRankingEntity> get stocks {
     if (_stocks is EqualUnmodifiableListView) return _stocks;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_stocks);
@@ -143,10 +211,33 @@ class _$StockRankingStateImpl implements _StockRankingState {
   @override
   @JsonKey()
   final String errorMessage;
+  @override
+  @JsonKey()
+  final String selectedSector;
+  final List<String> _sectors;
+  @override
+  @JsonKey()
+  List<String> get sectors {
+    if (_sectors is EqualUnmodifiableListView) return _sectors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sectors);
+  }
+
+  @override
+  @JsonKey()
+  final String selectedMarket;
+  final List<String> _markets;
+  @override
+  @JsonKey()
+  List<String> get markets {
+    if (_markets is EqualUnmodifiableListView) return _markets;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_markets);
+  }
 
   @override
   String toString() {
-    return 'StockRankingState(loading: $loading, stocks: $stocks, errorMessage: $errorMessage)';
+    return 'StockRankingState(loading: $loading, stocks: $stocks, errorMessage: $errorMessage, selectedSector: $selectedSector, sectors: $sectors, selectedMarket: $selectedMarket, markets: $markets)';
   }
 
   @override
@@ -157,12 +248,25 @@ class _$StockRankingStateImpl implements _StockRankingState {
             (identical(other.loading, loading) || other.loading == loading) &&
             const DeepCollectionEquality().equals(other._stocks, _stocks) &&
             (identical(other.errorMessage, errorMessage) ||
-                other.errorMessage == errorMessage));
+                other.errorMessage == errorMessage) &&
+            (identical(other.selectedSector, selectedSector) ||
+                other.selectedSector == selectedSector) &&
+            const DeepCollectionEquality().equals(other._sectors, _sectors) &&
+            (identical(other.selectedMarket, selectedMarket) ||
+                other.selectedMarket == selectedMarket) &&
+            const DeepCollectionEquality().equals(other._markets, _markets));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, loading,
-      const DeepCollectionEquality().hash(_stocks), errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      loading,
+      const DeepCollectionEquality().hash(_stocks),
+      errorMessage,
+      selectedSector,
+      const DeepCollectionEquality().hash(_sectors),
+      selectedMarket,
+      const DeepCollectionEquality().hash(_markets));
 
   /// Create a copy of StockRankingState
   /// with the given fields replaced by the non-null parameter values.
@@ -177,15 +281,27 @@ class _$StockRankingStateImpl implements _StockRankingState {
 abstract class _StockRankingState implements StockRankingState {
   const factory _StockRankingState(
       {final bool loading,
-      final List<JittaRankingEntity> stocks,
-      final String errorMessage}) = _$StockRankingStateImpl;
+      final List<StockRankingEntity> stocks,
+      final String errorMessage,
+      final String selectedSector,
+      final List<String> sectors,
+      final String selectedMarket,
+      final List<String> markets}) = _$StockRankingStateImpl;
 
   @override
   bool get loading;
   @override
-  List<JittaRankingEntity> get stocks;
+  List<StockRankingEntity> get stocks;
   @override
   String get errorMessage;
+  @override
+  String get selectedSector;
+  @override
+  List<String> get sectors;
+  @override
+  String get selectedMarket;
+  @override
+  List<String> get markets;
 
   /// Create a copy of StockRankingState
   /// with the given fields replaced by the non-null parameter values.

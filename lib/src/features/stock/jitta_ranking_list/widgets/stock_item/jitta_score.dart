@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../domain/entities/stock/jitta_ranking_entity.dart';
+import '../../../../../domain/entities/stock/stock_ranking_entity.dart';
 
 class JittaScore extends StatelessWidget {
   final String jittaScore;
-  final JittaRankingEntity stock;
+  final StockRankingEntity stock;
 
   const JittaScore({
     super.key,

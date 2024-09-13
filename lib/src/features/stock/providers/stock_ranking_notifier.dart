@@ -5,7 +5,6 @@ import 'package:stock_ranking_project/src/core/service/graph_ql/graph_ql_service
 import 'package:stock_ranking_project/src/core/service/network_info/network_info_service.dart';
 import 'package:stock_ranking_project/src/data/repositories/stock_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stock_ranking_project/src/data/repositories/stock_repository_mock.dart';
 import 'package:stock_ranking_project/src/data/source/remote/stock_remote_data_source.dart';
 import 'package:stock_ranking_project/src/features/stock/providers/stock_ranking_state.dart';
 
@@ -18,6 +17,9 @@ abstract class StockRankingNotifier extends StateNotifier<StockRankingState> {
     required String market,
     String? sector,
   });
+
+  void setSelectedSector(String sector);
+  void setSelectedMarket(String market);
 
   void resetPagination();
 }
@@ -32,7 +34,7 @@ class StockRankingNotifierImpl extends StockRankingNotifier {
 
   @override
   Future<void> getStockRankings({
-    required String market,
+    String? market,
     String? sector,
   }) async {
     state = state.copyWith(loading: true, errorMessage: '');
@@ -40,9 +42,9 @@ class StockRankingNotifierImpl extends StockRankingNotifier {
     try {
       final stocks = await _stockRepository.getStockRanking(
         limit: _limit,
-        market: market,
         page: _currentPage,
-        sector: sector,
+        market: state.selectedMarket == "All" ? null : state.selectedMarket,
+        sector: state.selectedSector == 'All' ? null : state.selectedSector,
       );
 
       state = state.copyWith(loading: false, stocks: stocks);
@@ -52,33 +54,35 @@ class StockRankingNotifierImpl extends StockRankingNotifier {
   }
 
   @override
+  void setSelectedSector(String sector) {
+    state = state.copyWith(selectedSector: sector);
+    getStockRankings(market: 'SET', sector: sector == 'All' ? null : sector);
+  }
+
+  @override
+  void setSelectedMarket(String market) {
+    state = state.copyWith(selectedMarket: market);
+    getStockRankings(market: state.selectedMarket, sector: state.selectedSector == 'All' ? null : state.selectedSector);
+  }
+
+  @override
   void resetPagination() {
     _currentPage = 1;
     state = state.copyWith(stocks: []);
   }
 }
 
-// final stockRepositoryProvider = Provider<StockRepositoryImpl>((ref) {
-//   final remoteDataSource = StockRemoteDataSourceImpl(GraphQLServiceImpl());
-//   final hiveStorage = Hive.box(StorageKeys.stockRankingListCache);
-//   final localDataSource = StockLocalDataSourceImpl(hiveStorage);
-//   final networkInfoService = NetworkInfoImpl(Connectivity());
-//
-//   return StockRepositoryImpl(
-//     remoteDataSource: remoteDataSource,
-//     localDataSource: localDataSource,
-//     networkInfoService: networkInfoService,
-//   );
-// });
-
-// final stockRankingNotifierProvider = StateNotifierProvider<StockRankingNotifierImpl, StockRankingState>((ref) {
-//   final stockRepository = ref.watch(stockRepositoryProvider);
-//   return StockRankingNotifierImpl(stockRepository);
-// });
-
-// mock data
 final stockRepositoryProvider = Provider<StockRepository>((ref) {
-  return StockRepositoryImplMock();
+  final remoteDataSource = StockRemoteDataSourceImpl(GraphQLServiceImpl());
+  final hiveStorage = Hive.box(StorageKeys.stockRankingListCache);
+  final localDataSource = StockLocalDataSourceImpl(hiveStorage);
+  final networkInfoService = NetworkInfoImpl(Connectivity());
+
+  return StockRepositoryImpl(
+    remoteDataSource: remoteDataSource,
+    localDataSource: localDataSource,
+    networkInfoService: networkInfoService,
+  );
 });
 
 final stockRankingNotifierProvider = StateNotifierProvider<StockRankingNotifierImpl, StockRankingState>((ref) {

@@ -1,22 +1,21 @@
 import 'package:stock_ranking_project/src/core/error/failure.dart';
 import 'package:stock_ranking_project/src/core/service/network_info/network_info_service.dart';
-import 'package:stock_ranking_project/src/data/models/jitta_ranking_model.dart';
-
-import '../../domain/entities/stock/jitta_ranking_entity.dart';
+import 'package:stock_ranking_project/src/data/models/stock_ranking_model.dart';
+import '../../domain/entities/stock/stock_ranking_entity.dart';
 import '../source/local/stock_local_data_source.dart';
 import '../source/remote/stock_remote_data_source.dart';
 
 abstract class StockRepository {
-  Future<List<JittaRankingEntity>> getStockRanking({
+  Future<List<StockRankingEntity>> getStockRanking({
     required int limit,
-    required String market,
+    String? market,
     required int page,
     String? sector,
   });
 
-  Future<void> cacheStockRanking(List<JittaRankingModel> stocks);
+  Future<void> cacheStockRanking(List<StockRankingModel> stocks);
 
-  Future<List<JittaRankingModel?>> getCachedStockRanking();
+  Future<List<StockRankingModel?>> getCachedStockRanking();
 }
 
 class StockRepositoryImpl implements StockRepository {
@@ -31,9 +30,9 @@ class StockRepositoryImpl implements StockRepository {
   });
 
   @override
-  Future<List<JittaRankingEntity>> getStockRanking({
+  Future<List<StockRankingEntity>> getStockRanking({
     required int limit,
-    required String market,
+    String? market,
     required int page,
     String? sector,
   }) async {
@@ -47,17 +46,16 @@ class StockRepositoryImpl implements StockRepository {
     }
 
     try {
-      final List<JittaRankingEntity> stockRankingEntities =
-          await remoteDataSource.getStockRanking(
+      final List<StockRankingEntity> stockRankingEntities =
+      await remoteDataSource.getStockRanking(
         limit: limit,
-        market: market,
+        market: market ?? 'All',
         page: page,
         sector: sector,
       );
 
-      // cache data after fetching from remote
+      // Cache the data after fetching from remote
       await cacheStockRanking(stockRankingEntities.map((e) => e.toModel()).toList());
-
 
       return stockRankingEntities;
     } on ServerFailure {
@@ -68,12 +66,12 @@ class StockRepositoryImpl implements StockRepository {
   }
 
   @override
-  Future<void> cacheStockRanking(List<JittaRankingModel> stocks) {
+  Future<void> cacheStockRanking(List<StockRankingModel> stocks) {
     return localDataSource.cacheStockRankingWithExpiry(stocks);
   }
 
   @override
-  Future<List<JittaRankingModel?>> getCachedStockRanking() {
+  Future<List<StockRankingModel?>> getCachedStockRanking() {
     return localDataSource.getCachedStockRanking();
   }
 }

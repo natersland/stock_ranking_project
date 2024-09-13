@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-import '../../../../domain/entities/stock/jitta_ranking_entity.dart';
+import '../../../../../domain/entities/stock/stock_ranking_entity.dart';
 
 class CompanyName extends StatelessWidget {
-  final JittaRankingEntity stock;
+  final StockRankingEntity stock;
   const CompanyName({super.key, required this.stock});
 
   @override

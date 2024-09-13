@@ -2,11 +2,11 @@
 import 'package:hive_flutter/adapters.dart';
 import 'package:stock_ranking_project/src/core/constant/storage_keys.dart';
 
-import '../../models/jitta_ranking_model.dart';
+import '../../models/stock_ranking_model.dart';
 
 abstract class StockLocalDataSource {
-  Future<List<JittaRankingModel?>> getCachedStockRanking();
-  Future<void> cacheStockRankingWithExpiry(List<JittaRankingModel> stocks);
+  Future<List<StockRankingModel?>> getCachedStockRanking();
+  Future<void> cacheStockRankingWithExpiry(List<StockRankingModel> stocks);
   bool isCacheExpired();
 }
 
@@ -16,13 +16,13 @@ class StockLocalDataSourceImpl implements StockLocalDataSource {
   StockLocalDataSourceImpl(this._box);
 
   @override
-  Future<List<JittaRankingModel?>> getCachedStockRanking() async {
-    final List<JittaRankingModel?>? cachedStockRanking = _box.get(StorageKeys.stockRankingListCache);
+  Future<List<StockRankingModel?>> getCachedStockRanking() async {
+    final List<StockRankingModel?>? cachedStockRanking = _box.get(StorageKeys.stockRankingListCache);
     return cachedStockRanking ?? [];
   }
 
   @override
-  Future<void> cacheStockRankingWithExpiry(List<JittaRankingModel> stocks) async {
+  Future<void> cacheStockRankingWithExpiry(List<StockRankingModel> stocks) async {
     await _box.clear();
     await _box.add(stocks);
 
