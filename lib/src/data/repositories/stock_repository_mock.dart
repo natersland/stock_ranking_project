@@ -14,9 +14,9 @@ class StockRepositoryImplMock extends StockRepository {
   }) {
     final random = Random();
     List<GraphEntity> generateRandomGraphs() {
-      int graphCount = random.nextInt(5) + 1;
+      int graphCount = random.nextInt(20) + 1;
       return List.generate(graphCount, (index) {
-        double linePrice = random.nextDouble() * 1000 + 100;
+        double linePrice = random.nextDouble() * 500 + 100;
         double stockPrice = linePrice + random.nextDouble() * 10;
         return GraphEntity(linePrice: linePrice, stockPrice: stockPrice);
       });
