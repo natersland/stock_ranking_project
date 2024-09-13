@@ -64,7 +64,7 @@ class StockDetailPage extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         _buildInfoRow(Icons.assessment, 'Jitta Score', '${stock.jittaScore}',
-            Colors.blueAccent),
+            Colors.lightBlueAccent),
         _buildInfoRow(Icons.leaderboard, 'Rank', '${stock.rank}'),
         _buildInfoRow(
             Icons.attach_money, 'Latest Price', '\$${stock.latestPrice}'),
